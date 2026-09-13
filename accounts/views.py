@@ -94,7 +94,7 @@ def forget_password(request):
 @api_view(['POST'])
 def reset_password(request,token):
     incoming_data = request.data
-    user = get_object_or_404(User,profile__reset_password_token = token)
+    user = get_object_or_404(User,profile__reset_password_token  = token)
 
     if user.profile.reset_password_expire.replace(tzinfo = None) < datetime.now():
         return Response({"error":"token is expired"}, status=status.HTTP_400_BAD_REQUEST)
@@ -104,13 +104,11 @@ def reset_password(request,token):
         return Response({'error': 'Passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
 
     user.password =make_password(incoming_data.get('password'))
-    user.profile.reset_password_token =token
-    user.profile.reset_password_expire_token = expired_date
+    user.profile.reset_password_token =""
+    user.profile.reset_password_expire_token = None
 
    
-    expired_date = timezone.now() + timedelta(minutes=10)
-    user.profile.reset_password_token =token
-    user.profile.reset_password_expire_token = expired_date
+
     user.profile.save()
     user.save()
     return Response({"details": 'password reset is done '})
