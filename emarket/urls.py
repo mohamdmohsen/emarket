@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include("product.urls")),
     path('api/', include("accounts.urls")),
+    path('api/', include("order.urls")),
     path('api/token/', TokenObtainPairView.as_view()),
 ]
 
