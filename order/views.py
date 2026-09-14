@@ -4,7 +4,7 @@ from .models import Order, OrderItem
 from product.models import Product
 from rest_framework.response import Response
 from .serializers import *
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated ,IsAdminUser
 from rest_framework import status
 # Create your views here.
 
@@ -26,7 +26,7 @@ def get_order(request,pk):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,IsAdminUser])
 def update_status_order(request,pk):
     order = get_object_or_404(Order , id = pk)
     order.status = request.data['status']
